@@ -279,9 +279,8 @@ class CustomerController extends Controller
         \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\WelcomeCredentialsMail($user, $plainPassword));
 
         return response()->json([
-            'message' => "Account created for {$user->email}",
+            'message' => "Account created for {$user->email}. Credentials have been emailed.",
             'user' => $user,
-            'password' => $plainPassword,
         ]);
     }
 
@@ -323,7 +322,7 @@ class CustomerController extends Controller
             }
         } catch (\Exception $e) {
             \Log::error("Dashboard Stats Stripe Error: " . $e->getMessage());
-            $stripeError = $e->getMessage();
+            $stripeError = config('app.debug') ? $e->getMessage() : 'Unable to connect to payment service';
         }
         
         return response()->json([

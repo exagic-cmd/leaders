@@ -311,8 +311,35 @@ class OnboardingController extends Controller
     {
         $onboarding = Onboarding::findOrFail($id);
         
-        // Simple update for any field provided
-        $onboarding->update($request->all());
+        // Only allow updating safe fields — never user_id, id, or stripe_charge_id
+        $allowedFields = [
+            'category', 'practice_name', 'practitioner_name', 'credentials',
+            'specialties', 'practice_type', 'years_experience', 'primary_email',
+            'contact_phone', 'address', 'regions_served', 'timezone',
+            'ideal_audience', 'patient_problem', 'niche_focus', 'brand_tone',
+            'liked_websites', 'brand_colors', 'education', 'certifications',
+            'board_certifications', 'memberships', 'awards', 'media_features',
+            'short_bio', 'full_story', 'work_motivation', 'personal_mission',
+            'services', 'testimonials', 'website_goals', 'required_pages',
+            'booking_url', 'crm_tool', 'payment_processor', 'patient_portal_url',
+            'social_links', 'hipaa_compliant', 'has_privacy_policy', 'has_terms',
+            'medical_disclaimer', 'privacy_policy_type', 'terms_condition_type',
+            'final_notes', 'competitors_admired', 'deadline_expectations', 'current_step',
+            'key_achievements', 'numbers_impact', 'partner_orgs', 'grants_funding',
+            'media_coverage', 'training_programs', 'affiliations', 'podcasts',
+            'past_clients', 'degrees', 'grants', 'press_mentions', 'board_roles',
+            'media_mentions', 'publications', 'speaking_engagements', 'conferences',
+            'open_source', 'media_awards', 'why_this_work', 'current_programs',
+            'past_initiatives', 'geographic_reach', 'signature_topics', 'results_impact',
+            'case_studies', 'research_focus', 'ongoing_work', 'impact_statement',
+            'career_milestones', 'business_outcomes', 'notable_projects', 'innovation_details',
+            'metrics_impact', 'donation_link', 'newsletter_signup', 'volunteer_form',
+            'event_registration', 'google_scholar', 'orcid', 'research_gate',
+            'demo_link', 'github_link', 'linkedin', 'public_email', 'inquiry_types',
+            'seo_keywords', 'target_industries', 'target_regions',
+        ];
+
+        $onboarding->update($request->only($allowedFields));
 
         return response()->json([
             'message' => 'Onboarding record updated successfully',

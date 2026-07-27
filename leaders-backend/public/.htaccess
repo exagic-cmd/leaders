@@ -5,6 +5,12 @@
 
     RewriteEngine On
 
+    # Block access to dotfiles (.env, .git, .htaccess, etc.)
+    RewriteRule (^\.|/\.) - [F,L]
+
+    # Block access to sensitive file types
+    RewriteRule \.(sql|log|sh|bak|config|dist|fla|inc|ini|psd|swp|yml|yaml)$ - [F,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -23,3 +29,4 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+

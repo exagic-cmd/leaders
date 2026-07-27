@@ -38,6 +38,13 @@ return [
     'stripe' => [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+    ],
+
+    'woocommerce' => [
+        'store_url' => env('WC_STORE_URL'),
+        'consumer_key' => env('WC_CONSUMER_KEY'),
+        'consumer_secret' => env('WC_CONSUMER_SECRET'),
     ],
 
     'recaptcha' => [
